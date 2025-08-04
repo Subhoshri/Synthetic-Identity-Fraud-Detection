@@ -1,0 +1,22 @@
+[
+  {
+    "email":"user396@example.com",
+    "score":0.34
+  },
+  {
+    "email":"user2692@example.com",
+    "score":0.333
+  },
+  {
+    "email":"user1465@example.com",
+    "score":0.33
+  },
+  {
+    "email":"user1023@example.com",
+    "score":0.329
+  },
+  {
+    "email":"user467@example.com",
+    "score":0.328
+  }
+]

@@ -5,6 +5,7 @@ from fake_profile import generate_fake_profile
 from graph_feature import load_graph, get_connected_users
 import pandas as pd
 import random
+import json
 
 G=load_graph("models/user_graph.gpickle")
 
@@ -17,13 +18,15 @@ df = df.dropna(subset=["device_os", "source", "email", "phone_number", "device_i
 class InputData(BaseModel):
     data: dict
 
+with open("top_risky_preview.json") as f:
+    cached_preview = json.load(f)
+
 @app.get("/users")
 def get_summary():
-    top_risky = df.sample(100).copy()
-    top_risky["score"] = top_risky.apply(lambda x: predict_user_risk(pd.DataFrame([x]))["ensemble_score"], axis=1)
-    top5 = top_risky.sort_values("score", ascending=False).head(5)
-    preview = top5[["email", "score"]].reset_index(drop=True).to_dict(orient="records")
-    return {"total_users": len(df), "top_risky_users": preview}
+    return {
+        "total_users": len(df),
+        "top_risky_users": cached_preview
+    }
 
 @app.get("/user_profile/{user_id}")
 def get_user_profile(user_id: str):
